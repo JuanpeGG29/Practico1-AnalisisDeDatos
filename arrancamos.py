@@ -35,7 +35,7 @@ if __name__ == "__main__":
     print("\nEvaluacion de posibles motivos de datos faltantes:")
 
     # Aqui podrias anadir un analisis mas detallado dependiendo del contexto de las columnas
-    
+
     '''
     for columna in datos_faltantes.index[datos_faltantes > 0]:
         print(f"\nColumna: {columna}")
@@ -55,13 +55,14 @@ if __name__ == "__main__":
     for columna in data.select_dtypes(include=['object']).columns:
         print(f"\nColumna: {columna}")
         unique_values = data[columna].value_counts()
-        print(unique_values.head(n))  # Mostrar solo los primeros n valores únicos
+        # Mostrar solo los primeros n valores únicos
+        print(unique_values.head(n))
 
         plt.figure(figsize=(10, 5))
         sns.countplot(y=columna, data=data, order=unique_values.head(n).index)
         plt.title(f'Frecuencia de valores en {columna}')
-        plt.show()
 
+        plt.show()
 
     # g. Evaluar la existencia de datos inconsistentes
     print("\nEvaluacion de datos inconsistentes:")
