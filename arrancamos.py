@@ -87,4 +87,12 @@ print("\nEvaluacion de datos inconsistentes:")
 # a. Normalizar las variables continuas (numéricas).
 
 
+numericas = data.select_dtypes(include=['float64', 'int64']).columns
+scaler = StandardScaler()
+data[numericas] = scaler.fit_transform(data[numericas])
+
+print("\nVariables numéricas después de la normalización:")
+print(data[numericas].head())
+
+
 # b. Investigar ventajas y posibles usos de esta tarea.
