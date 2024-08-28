@@ -1,6 +1,7 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
+import StandardScaler
 
 data = pd.read_csv('permisos_construccion_2.csv')  # 43 columnas
 
@@ -80,3 +81,10 @@ for columna in data.select_dtypes(include=['object']).columns:
 print("\nEvaluacion de datos inconsistentes:")
 # Aqui puedes anadir chequeos adicionales, por ejemplo, verificar si existen valores fuera de un rango esperado
 # o valores que no tienen sentido dentro del contexto de las variables.
+
+
+# 5. Normalización de datos
+# a. Normalizar las variables continuas (numéricas).
+
+
+# b. Investigar ventajas y posibles usos de esta tarea.
