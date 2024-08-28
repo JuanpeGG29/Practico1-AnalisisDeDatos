@@ -44,27 +44,39 @@ if __name__ == "__main__":
     '''
 
     # e. Valores unicos de variables discretas
-    print("\nValores unicos de las variables discretas:")
-    for columna in data.select_dtypes(include=['object']).columns:
-        print(f"\nColumna: {columna}")
-        print(data[columna].unique())
+    # Lista de variables discretas categóricas seleccionadas
+categoricas = [
+    'Permit Type Definition', 'Street Suffix', 'Current Status',
+    'Structural Notification', 'Voluntary Soft-Story Retrofit', 'Fire Only Permit',
+    'Existing Use', 'Proposed Use', 'TIDF Compliance',
+    'Existing Construction Type Description', 'Proposed Construction Type Description',
+    'Site Permit', 'Supervisor District', 'Neighborhoods - Analysis Boundaries'
+]
 
-    # f. Cuantificar valores unicos y realizar histogramas
-    n = 20  # Número máximo de valores únicos a mostrar
-    print("\nCuantificacion de valores unicos y generacion de histogramas:")
-    for columna in data.select_dtypes(include=['object']).columns:
-        print(f"\nColumna: {columna}")
-        unique_values = data[columna].value_counts()
-        # Mostrar solo los primeros n valores únicos
-        print(unique_values.head(n))
+print("\nValores únicos de las variables discretas categóricas:")
 
-        plt.figure(figsize=(10, 5))
-        sns.countplot(y=columna, data=data, order=unique_values.head(n).index)
-        plt.title(f'Frecuencia de valores en {columna}')
+# Imprimir solo los valores únicos de las columnas categóricas seleccionadas
+for columna in categoricas:
+    print(f"\nColumna: {columna}")
+    print(data[columna].unique())
 
-        plt.show()
 
-    # g. Evaluar la existencia de datos inconsistentes
-    print("\nEvaluacion de datos inconsistentes:")
-    # Aqui puedes anadir chequeos adicionales, por ejemplo, verificar si existen valores fuera de un rango esperado
-    # o valores que no tienen sentido dentro del contexto de las variables.
+# f. Cuantificar valores unicos y realizar histogramas
+n = 20  # Número máximo de valores únicos a mostrar
+print("\nCuantificacion de valores unicos y generacion de histogramas:")
+for columna in data.select_dtypes(include=['object']).columns:
+    print(f"\nColumna: {columna}")
+    unique_values = data[columna].value_counts()
+    # Mostrar solo los primeros n valores únicos
+    print(unique_values.head(n))
+
+    plt.figure(figsize=(10, 5))
+    sns.countplot(y=columna, data=data, order=unique_values.head(n).index)
+    plt.title(f'Frecuencia de valores en {columna}')
+
+    plt.show()
+
+# g. Evaluar la existencia de datos inconsistentes
+print("\nEvaluacion de datos inconsistentes:")
+# Aqui puedes anadir chequeos adicionales, por ejemplo, verificar si existen valores fuera de un rango esperado
+# o valores que no tienen sentido dentro del contexto de las variables.
