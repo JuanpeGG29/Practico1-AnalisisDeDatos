@@ -1,7 +1,8 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import StandardScaler
+from sklearn.preprocessing import StandardScaler
+
 
 data = pd.read_csv('permisos_construccion_2.csv')  # 43 columnas
 
