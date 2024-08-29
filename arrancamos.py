@@ -26,13 +26,21 @@ if __name__ == "__main__":
     print("\nPorcentaje de datos faltantes por columna:")
     print(porcentaje_faltantes[porcentaje_faltantes > 0])
 
-    duplicados = data.duplicated().sum()
-    porcentaje_duplicados = (duplicados / filas) * 100
-    print(f"\nCantidad de filas duplicadas: {duplicados}")
+    #fias duplicadas
+    total_filas = len(data)
+    duplicados = data.duplicated()
+    numero_duplicados = duplicados.sum()
+    porcentaje_duplicados = (numero_duplicados / total_filas) * 100
+    print(f"Número total de filas: {total_filas}")
+    print(f"Número de filas duplicadas: {numero_duplicados}")
     print(f"Porcentaje de filas duplicadas: {porcentaje_duplicados:.2f}%")
 
+    if numero_duplicados > 0:
+        print(data[duplicados].head())
+
+
     # d. Evaluar posibles motivos de datos faltantes
-    print("\nEvaluacion de posibles motivos de datos faltantes:")
+        print("\nEvaluacion de posibles motivos de datos faltantes: Los datos con mayor faltante en porcentualmente son: treet Number Suffix  ")
 
     # Aqui podrias anadir un analisis mas detallado dependiendo del contexto de las columnas
     
@@ -43,27 +51,58 @@ if __name__ == "__main__":
         print(data[columna].value_counts(dropna=False))
     '''
 
-    # e. Valores unicos de variables discretas
-    print("\nValores unicos de las variables discretas:")
-    for columna in data.select_dtypes(include=['object']).columns:
-        print(f"\nColumna: {columna}")
-        print(data[columna].unique())
 
-    # f. Cuantificar valores unicos y realizar histogramas
-    n = 20  # Número máximo de valores únicos a mostrar
-    print("\nCuantificacion de valores unicos y generacion de histogramas:")
-    for columna in data.select_dtypes(include=['object']).columns:
-        print(f"\nColumna: {columna}")
-        unique_values = data[columna].value_counts()
-        print(unique_values.head(n))  # Mostrar solo los primeros n valores únicos
-
-        plt.figure(figsize=(10, 5))
-        sns.countplot(y=columna, data=data, order=unique_values.head(n).index)
-        plt.title(f'Frecuencia de valores en {columna}')
-        plt.show()
 
 
     # g. Evaluar la existencia de datos inconsistentes
     print("\nEvaluacion de datos inconsistentes:")
+    # Verifica el tipo de datos de cada columna
+    print(data.dtypes)
+    #verificacion de datos numericos
+    for col in data.select_dtypes(include=['number']).columns:
+        print(f"Resumen de valores en la columna {col}:")
+        print(data[col].describe())  # Esto te da un resumen estadístico para detectar posibles outliers o valores erróneos
+        print("\n")
+    print('pete')
+    #Revision de valores unicos 
+    for col in data.select_dtypes(include=['object']).columns:
+        print(f"Valores únicos en la columna {col}:")
+        print(data[col].value_counts())
+        print("\n")
+
+
+
+
+
+    #4.
     # Aqui puedes anadir chequeos adicionales, por ejemplo, verificar si existen valores fuera de un rango esperado
+    #Respecto a las columnas con muchos datos faltantes, decidimos eliminarlas ya que la informacion que tienen es poco util
+    # Columnas a eliminar debido a datos faltantes
+    columnas_a_eliminar = ['Street Number Suffix', 'Unit Suffix', 'Voluntary Soft-Story Retrofit', 'Fire Only Permit', 'TIDF Compliance', 'Site Permit']
+    data = data.drop(columns=columnas_a_eliminar)
+    print(data.columns)
+    #faltaria decidir que hacer en el caso de que los datos faltantes sean pocos pero igualmente significativos
+
+
+    # Eliminar espacios al principio y al final de las cadenas en las columnas relevantes para reducir incosistencias
+    data['Permit Type Definition'] = data['Permit Type Definition'].str.strip()
+    data['Existing Construction Type Description'] = data['Existing Construction Type Description'].str.strip()
+    # Normalizar los nombres de calles a un formato consistente para reducir inconsistencias
+    data['Street Name'] = data['Street Name'].str.lower()
+    # Corregir valores en la columna 'Supervisor District' 
+    data['Supervisor District'].replace({'quince': 15, 'veinte': 20, 'diez': 10}, inplace=True)
+    #normalizar
+    for col in data.select_dtypes(include=['object']).columns:
+        data[col] = data[col].str.strip()  # Eliminar espacios al principio y al final
+        data[col] = data[col].str.lower()  # Convertir todo a minúsculas (opcional)
+
+    total_filas = len(data)
+    duplicados = data.duplicated()
+    numero_duplicados = duplicados.sum()
+    porcentaje_duplicados = (numero_duplicados / total_filas) * 100
+    print(f"Número total de filas: {total_filas}")
+    print(f"Número de filas duplicadas: {numero_duplicados}")
+    print(f"Porcentaje de filas duplicadas: {porcentaje_duplicados:.2f}%")
+
+
     # o valores que no tienen sentido dentro del contexto de las variables.
